@@ -1,0 +1,23 @@
+plugins {
+    id "application"
+}
+
+ext.moduleName = "application"
+mainClassName = "application.Main"
+
+dependencies {
+    compile project(":domain")
+
+    runtime project(":persistence")
+}
+
+run {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--module', moduleName + '/' + mainClassName
+        ]
+        classpath = files()
+    }
+}
